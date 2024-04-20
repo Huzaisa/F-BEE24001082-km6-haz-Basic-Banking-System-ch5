@@ -29,7 +29,7 @@ describe('Authentication API', () => {
     });
 
     it('should return authentication successful', async() => {
-        const token = 'valid_token'; // Assuming a valid token for authentication
+        const token = 'valid_token';
         const res = await request(app)
             .get('/api/v1/auth/authenticate')
             .set('Authorization', `Bearer ${token}`);

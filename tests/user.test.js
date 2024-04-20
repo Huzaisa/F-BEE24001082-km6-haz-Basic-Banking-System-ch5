@@ -15,18 +15,18 @@ describe('User API', () => {
                     address: '456 Avenue, Town'
                 }
             });
-        expect(res.statusCode).toEqual(201); // Update status code to expect 201 for successful creation
+        expect(res.statusCode).toEqual(201);
         expect(res.body).toHaveProperty('id');
     });
 
     it('should get all users', async() => {
         const res = await request(app).get('/api/v1/users');
         expect(res.statusCode).toEqual(200);
-        expect(Array.isArray(res.body)).toBeTruthy(); // Update assertion to check if the response body is an array
+        expect(Array.isArray(res.body)).toBeTruthy();
     });
 
     it('should get user by ID', async() => {
-        const res = await request(app).get('/api/v1/users/1'); // Assuming user with ID 1 exists
+        const res = await request(app).get('/api/v1/users/1');
         expect(res.statusCode).toEqual(200);
         expect(res.body).toHaveProperty('id', 1);
     });

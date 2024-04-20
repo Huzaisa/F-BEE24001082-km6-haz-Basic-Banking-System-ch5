@@ -1,6 +1,5 @@
-// controllers/v1/authController.js
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../../config'); // Sesuaikan dengan path konfigurasi Anda
+const { JWT_SECRET } = require('../../config');
 
 const register = async(req, res) => {
     const { nama, email, password, profile } = req.body;
@@ -46,7 +45,7 @@ const authenticate = async(req, res) => {
     try {
         const decodedToken = jwt.verify(token, JWT_SECRET);
         const userId = decodedToken.userId;
-        // Lakukan sesuatu dengan userId, misalnya verifikasi apakah pengguna ada dalam sistem
+
         res.json({ authenticated: true });
     } catch (error) {
         res.status(401).json({ error: 'Invalid token' });
