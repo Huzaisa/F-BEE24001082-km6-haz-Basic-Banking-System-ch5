@@ -1,0 +1,327 @@
+openapi: 3.0.1
+info:
+  title: API
+  description: Deskripsi singkat tentang API
+  version: 1.0.0
+  contact:
+    email: huzi@example.com
+servers:
+  - url: http://localhost:3000/api/v1
+paths:
+  /auth/register:
+    post:
+      summary: Register new user
+      description: Endpoint to register a new user in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterUser"
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          description: Duplicated email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Email already used!
+
+  /auth/login:
+    post:
+      summary: User login
+      description: Endpoint for user login.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+  /auth/authenticate:
+    post:
+      summary: Check authentication
+      description: Endpoint to check if authentication is successful.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authenticated:
+                    type: boolean
+                    example: true
+
+  /users:
+    post:
+      summary: Create a new user
+      description: Endpoint to create a new user along with their profile.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUser"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+    get:
+      summary: Get all users
+      description: Endpoint to get a list of all users.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /users/{userId}:
+    get:
+      summary: Get user by ID
+      description: Endpoint to get details of a user by their ID.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /accounts:
+    post:
+      summary: Create a new account
+      description: Endpoint to create a new account for a registered user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAccount"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+
+    get:
+      summary: Get all accounts
+      description: Endpoint to get a list of all accounts.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+
+  /accounts/{accountId}:
+    get:
+      summary: Get account by ID
+      description: Endpoint to get details of an account by its ID.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+
+  /transactions:
+    post:
+      summary: Create a new transaction
+      description: Endpoint to create a new transaction between two accounts.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTransaction"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
+    get:
+      summary: Get all transactions
+      description: Endpoint to get a list of all transactions.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+
+  /transactions/{transactionId}:
+    get:
+      summary: Get transaction by ID
+      description: Endpoint to get details of a transaction by its ID.
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
+components:
+  schemas:
+    RegisterUser:
+      type: object
+      properties:
+        nama:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        profile:
+          $ref: "#/components/schemas/Profile"
+
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    CreateUser:
+      type: object
+      properties:
+        nama:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        profile:
+          $ref: "#/components/schemas/Profile"
+
+    CreateAccount:
+      type: object
+      properties:
+        userId:
+          type: integer
+        bankName:
+          type: string
+        bankAccountNumber:
+          type: string
+        balance:
+          type: number
+
+    CreateTransaction:
+      type: object
+      properties:
+        sourceAccountId:
+          type: integer
+        destinationAccountId:
+          type: integer
+        amount:
+          type: number
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        nama:
+          type: string
+        email:
+          type: string
+        profile:
+          $ref: "#/components/schemas/Profile"
+
+    Profile:
+      type: object
+      properties:
+        identityType:
+          type: string
+        identityNumber:
+          type: string
+        address:
+          type: string
+
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+        bankName:
+          type: string
+        bankAccountNumber:
+          type: string
+        balance:
+          type: number
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        sourceAccountId:
+          type: integer
+        destinationAccountId:
+          type: integer
+        amount:
+          type: number

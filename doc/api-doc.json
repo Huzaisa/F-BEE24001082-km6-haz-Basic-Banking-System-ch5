@@ -1,0 +1,149 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API",
+        "description": "Dokumentasi API u",
+        "version": "1.0.0"
+    },
+    "servers": [{
+        "url": "http://localhost:3000/api/v1"
+    }],
+    "paths": {
+        "/users": {
+            "post": {
+                "summary": "Menambahkan user baru",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nama": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "profile": {
+                                        "type": "object",
+                                        "properties": {
+                                            "identityType": {
+                                                "type": "string"
+                                            },
+                                            "identityNumber": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Mendapatkan daftar user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "get": {
+                "summary": "Mendapatkan detail user berdasarkan ID",
+                "parameters": [{
+                    "name": "userId",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID user yang akan ditemukan",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "nama": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "profile": {
+                        "$ref": "#/components/schemas/Profile"
+                    }
+                }
+            },
+            "Profile": {
+                "type": "object",
+                "properties": {
+                    "identityType": {
+                        "type": "string"
+                    },
+                    "identityNumber": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
