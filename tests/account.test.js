@@ -15,6 +15,7 @@ describe('Account API', () => {
         expect(res.body).toHaveProperty('id');
     });
 
+
     it('should get all accounts', async() => {
         const res = await request(app).get('/api/v1/accounts');
         expect(res.statusCode).toEqual(200);
